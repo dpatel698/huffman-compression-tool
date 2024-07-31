@@ -17,6 +17,8 @@ if __name__ == "__main__":
             min_heap = []
             for char, val in char_counts.items():
                 heapq.heappush(min_heap, HuffmanTree(char, val))
-
+            tree = HuffmanTree.buildTree(min_heap)
+            code_table = tree.generate_code_table()
+            print(code_table)
     except FileNotFoundError:
         print(f"{sys.argv[1]} not found")

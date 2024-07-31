@@ -11,17 +11,17 @@ class HuffmanNode:
         self.left = left
         self.right = right
 
-    def value(self) -> str:
+    def get_value(self) -> str:
         return self.char
 
-    def weight(self) -> int:
+    def get_weight(self) -> int:
         return self.weight
 
-    def left(self) -> HuffmanNode:
+    def get_left(self) -> HuffmanNode:
         return self.left
 
-    def right(self) -> HuffmanNode:
-        return self.right()
+    def get_right(self) -> HuffmanNode:
+        return self.right
 
     def is_leaf(self):
         return not self.left and not self.right
@@ -29,8 +29,8 @@ class HuffmanNode:
 
 class HuffmanTree:
 
-    def __init__(self, tree1: HuffmanTree = None, tree2: HuffmanTree = None, char=None, weight=None):
-        if tree1 or tree2:
+    def __init__(self, char=None, weight=None, tree1: HuffmanTree = None, tree2: HuffmanTree = None):
+        if tree1 and tree2:
             self.root = HuffmanNode(char, weight, tree1.get_root(), tree2.get_root())
         else:
             self.root = HuffmanNode(char, weight)
@@ -39,7 +39,7 @@ class HuffmanTree:
         return self.root
 
     def weight(self) -> int:
-        return self.root.weight()
+        return self.root.get_weight()
 
     def __lt__(self, other: HuffmanTree):
         return self.weight() < other.weight()
@@ -50,20 +50,20 @@ class HuffmanTree:
             tree1 = heapq.heappop(huff_heap)
             tree2 = heapq.heappop(huff_heap)
 
-            tree3 = HuffmanTree(tree1, tree2, None, tree1.weight() + tree2.weight())
+            tree3 = HuffmanTree(None, tree1.weight() + tree2.weight(), tree1, tree2)
             heapq.heappush(huff_heap, tree3)
 
         return heapq.heappop(huff_heap)
 
     def generate_code_table(self):
-        return self.get_code_table(self.root)
+        return self.__get_code_table(self.root)
 
-    def get_code_table(self, node:HuffmanNode, move_left=False, code=""):
-        if self.root.is_leaf():
-            return {self.root.value(): code}
+    def __get_code_table(self, node: HuffmanNode, move_left=False, code=""):
+        if node.is_leaf():
+            return {node.get_value(): code}
         table = dict()
-        table.update(self.get_code_table(node.left(), True, code + "0"))
-        table.update(self.get_code_table(node.right(), False, code + "1"))
+        table.update(self.__get_code_table(node.get_left(), True, code + "0"))
+        table.update(self.__get_code_table(node.get_right(), False, code + "1"))
         return table
 
 
