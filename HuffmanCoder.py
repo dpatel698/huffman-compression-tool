@@ -61,7 +61,10 @@ class HuffmanTree:
             node = q.pop()
             if node:
                 if node.is_leaf():
-                    out.append(str(node.get_weight()) + "|" + node.get_value())
+                    value = node.get_value()
+                    if value == "\n":
+                        value = "\\n"
+                    out.append(str(node.get_weight()) + "|" + value)
                 else:
                     out.append(str(node.get_weight()))
                 q.appendleft(node.get_left())
