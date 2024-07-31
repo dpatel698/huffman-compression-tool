@@ -1,6 +1,8 @@
 Summary:
-Compression tool that uses Huffman Coding to compress and decompress text files
+Compression tool that uses Huffman Coding to compress and decompress text files.
 
 Lessons:
-1. Compression trades time requirements for space requirements (compressing and decompress)
-2. Huffman Coding uses search tries for assigning variable length codes to characters
+1. Compression trades time requirements for space requirements (compressing and decompress).
+2. Huffman Coding uses search tries for assigning variable length codes to characters.
+   More frequent characters are assigned shorter binary codes.
+3. dict.update() used recursively to build a prefix table in HuffmanTree class
