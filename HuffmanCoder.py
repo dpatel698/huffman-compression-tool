@@ -37,10 +37,10 @@ class HuffmanTree:
         else:
             self.root = HuffmanNode(char, weight)
 
-    def get_root(self):
+    def get_root(self) -> HuffmanNode:
         return self.root
 
-    def set_root(self, root):
+    def set_root(self, root: HuffmanNode):
         self.root = root
 
     def weight(self) -> int:
@@ -102,10 +102,14 @@ class HuffmanTree:
         # when you pop a node, its children will be at i and i+1
         while queue:
             node = queue.pop()
+            if flat_data[i] == '':
+                i += 1
             if i < len(flat_data) and flat_data[i] != "N":
                 node.left = HuffmanTree.deserialize_node_encoding(i, flat_data)
                 queue.appendleft(node.left)
             i += 1
+            if flat_data[i] == '':
+                i += 1
             if i < len(flat_data) and flat_data[i] != "N":
                 node.right = HuffmanTree.deserialize_node_encoding(i, flat_data)
                 queue.appendleft(node.right)
@@ -134,14 +138,29 @@ class HuffmanTree:
         table.update(self.__get_code_table(node.get_right(), False, code + "1"))
         return table
 
-    def search_char(self, code):
+    def decode(self, code):
         """
-        Searches for a code in the tree and returns the character.
+        Decodes a binary code using the Huffman Tree.
         Moving left in the tree is "0" and right is "1".
         :param code: a binary code
-        :return: a character
+        :return: a string decoding
         """
-        pass
+        decoding = ""
+        i = 0
+        curr = self.get_root()
+        while i <= len(code):
+            if curr.is_leaf():
+                decoding += curr.get_value()
+                curr = self.get_root()
+                if i == len(code):
+                    break
+            elif code[i] == "0":
+                curr = curr.get_left()
+                i += 1
+            else:
+                curr = curr.get_right()
+                i += 1
+        return decoding
 
 
 
